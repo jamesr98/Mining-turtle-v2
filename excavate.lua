@@ -1,20 +1,19 @@
 local movement = require "movement"
 local dropper = require "dropper"
+local arguments = require "arguments"
+
+local args = {...}
 
 function excavate(maxX, maxY)
     for x=1, maxX do
         movement.recursiveRight((x -1))
 
+
         for y=1, maxY do
             turtle.dig()
             movement.forward()
 
-            local canMoveDown = true
-
-            while canMoveDown do
-                turtle.digDown()
-                canMoveDown = movement.down()
-            end
+            movement.digToBottom()
             movement.returnToSurface()
         end
 
@@ -30,6 +29,14 @@ end
 
 if dropper.isChestBelow() == false then
     print("Chest not present below.")
-else
-    excavate(1, 3)
+    return
 end
+
+local x, y = arguments.getXY(args)
+
+if (x == nil or y == nil) then
+    print("Invalid XY coordinates. Terminating.")
+    return
+end
+
+excavate(x, y)
