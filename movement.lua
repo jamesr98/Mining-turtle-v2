@@ -81,7 +81,16 @@ end
 
 function movement.returnToSurface()
     for i = y, -1 do
+        turtle.digUp()
         movement.up()
+    end
+end
+
+function movement.digToBottom()
+    local canMoveDown = true
+    while canMoveDown do
+        turtle.digDown()
+        canMoveDown = movement.down()
     end
 end
 
@@ -105,6 +114,24 @@ function movement.reverse()
         for i = 1, x do
             movement.left()
         end
+    end
+end
+
+function movement.getXYZ()
+    return x, y, z
+end
+
+function movement.goTo(targetX, targetY, targetZ)
+    for i = 1, targetX do
+        movement.right(true)
+    end
+
+    for i = 1, targetZ do
+        movement.forward()
+    end
+
+    for i = targetY, -1 do
+        movement.down()
     end
 
 end
