@@ -59,7 +59,7 @@ end
 function movement.recursiveRight(count)
     for i = 1, count do
         movement.right(true)
-    end 
+    end
 end
 
 function movement.recursiveForward(count)
@@ -89,6 +89,15 @@ end
 function movement.digToBottom()
     local canMoveDown = true
     while canMoveDown do
+
+        local isBlockBelow, data = turtle.inspectDown()
+
+        if (data.name == 'forbidden_arcanus:stella_arcanum') then
+            print('Stella arcanum found: returning to surface.')
+            canMoveDown = false;
+            return
+        end
+
         turtle.digDown()
         canMoveDown = movement.down()
     end
